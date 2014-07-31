@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+	<head>
+		<style>
+			body{text-align: center;}
+			table{margin-left: auto;margin-right:auto;}
+			input[type="text"]{width:600px;border:1px solid #cfcfcf;padding:5px;font-size:16pt;}
+			#resultat{width:600px;margin:auto;text-align:left;}
+			p{width:600px;margin:auto;text-align:center;}
+			.left input{float:left;}
+			.left label{float:left;}
+		</style>
+		
+		<!-- Librairie Jquery -->
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		
+		<script>
+      		$(function(){
+      			// Bouton option d'affichage
+      			$('#all').click(function(){
+      				$('input[type=checkbox]').not(':checked').prop('checked', true);
+      			});
+      			
+      			$('#default').click(function(){
+      				$(':checked').prop('checked', false);
+      				
+      				$('#francais').prop('checked', true);
+      				$('#corse').prop('checked', true);
+      			});
+      			
+       			$('#valider').click(function(){
+       				var mot    = $('#mot').val();
+       				var langue = $('#langue').val();
+       				var param  = '';
+       				
+       				// On récupère les paramètres d'affichages
+       				if($('#francais').is(':checked'))
+       					param = param + "FRANCESE ";
+       				if($('#italien').is(':checked'))
+       					param = param + "TALIANU ";
+       				if($('#anglais').is(':checked'))
+       					param = param + "INGLESE ";
+       				if($('#genre').is(':checked'))
+       					param = param + "NATURA ";
+       				if($('#prononciation').is(':checked'))
+       					param = param + "PRUNUNCIA ";
+       				if($('#corse').is(':checked'))
+       					param = param + "DEFINIZIONE ";
+       				if($('#etymologie').is(':checked'))
+       					param = param + "ETIMULUGIA ";
+       				if($('#grammaire').is(':checked'))
+       					param = param + "GRAMMATICA ";
+       				if($('#variante').is(':checked'))
+       					param = param + "VARIANTESD ";
+       				if($('#synonymes').is(':checked'))
+       					param = param + "SINONIMI ";
+       				if($('#antonymes').is(':checked'))
+       					param = param + "ANTONIMI ";
+       				if($('#derives').is(':checked'))
+       					param = param + "DERIVADICOMPOSTI ";
+       				if($('#expressions').is(':checked'))
+       					param = param + "SPRESSIONIEPRUVERBII ";
+       				if($('#analogies').is(':checked'))
+       					param = param + "ANALUGIE ";
+       				if($('#citations').is(':checked'))
+       					param = param + "CITAZIONIDAAUTORI ";
+       				if($('#bibliographie').is(':checked'))
+       					param = param + "BIBLIOGRAFIA ";
+       				if($('#indice').is(':checked'))
+       					param = param + "INDICE ";
+       				
+          			$.ajax({
+            			type: 'GET',
+            			url: 'traitement.php?mot=' + mot + '&langue=' + langue + '&param=' + param,
+            			dataType: 'JSON',
+            			success: function(data) {
+            				//alert(data);
+            				
+            				$.each(data, function(key, val){
+            					$.each(val, function(key2, val2){	
+            						$("#resultat").append(val2+'<br />');
+                				});
+                				$("#resultat").append('<hr>');
+                			});
+                			
+             			},
+           				error: function() {
+              				alert("La requête n'a pas abouti"); 
+              			}
+          			});
+       			});  
+      		});
+     	</script>
+     	
+     	<!--  -->
+     	<script>
+     		
+     	</script>
+	</head>
+	
+	<body>
+		<select id="langue">
+			<option value="mot_francais">En Francais</option>
+			<option value="mot_corse">En Corse</option>
+		</select><br /><br />
+		
+		<table><tr>
+			<td class="left">
+				<input type="checkbox" name="francais"      id="francais"      /> <label for="francais">Mot en français</label><br />
+		   		<input type="checkbox" name="italien"       id="italien"       /> <label for="italien">Mot en italien</label><br />
+				<input type="checkbox" name="anglais"       id="anglais"       /> <label for="anglais">Mot en anglais</label><br />
+		   		<input type="checkbox" name="genre"         id="genre"         /> <label for="genre">Genre</label><br />
+		  		<input type="checkbox" name="prononciation" id="prononciation" /> <label for="prononciation">Prononciation</label>
+		   	</td>
+		    	
+		   	<td class="left">
+		   		<input type="checkbox" name="corse"         id="corse"        /> <label for="corse">Définition en corse</label><br />
+		   		<input type="checkbox" name="etymologie"    id="etymologie"   /> <label for="etymologie">Etymologie</label><br />
+		   		<input type="checkbox" name="grammaire"     id="grammaire"    /> <label for="grammaire">Grammaire</label><br />
+		   		<input type="checkbox" name="variante"      id="variante"     /> <label for="variante">Variantes graphiques</label><br />
+		   		<input type="checkbox" name="synonymes"     id="synonymes"    /> <label for="synonymes">Synonymes</label>
+		   	</td>
+		    	
+		   	<td class="left">
+		   		<input type="checkbox" name="antonymes"     id="antonymes"    /> <label for="antonymes">Antonymes</label><br />
+		   		<input type="checkbox" name="derives"       id="derives"      /> <label for="derives">Dérivés composés</label><br />
+		   		<input type="checkbox" name="expressions"   id="expressions"  /> <label for="expressions">Expressions et proverbes</label><br />
+		   		<input type="checkbox" name="analogies"     id="analogies"    /> <label for="analogies">Analogies</label><br />
+		   		<input type="checkbox" name="citations"     id="citations"    /> <label for="citations">Citations d'auteurs</label>
+		   	</td>
+		    	
+		   	<td class="left">
+		   		<input type="checkbox" name="bibliographie" id="bibliographie" /> <label for="bibliographie">Bibliographie</label><br />
+		   		<input type="checkbox" name="indice"        id="indice"        /> <label for="indice">Indice</label>
+		   	</td>
+		</tr></table><br />
+		
+		<button id="default">Par défaut</button> &nbsp;
+		<button id="all">tout cocher</button>
+		<br /><br />
+		
+		<table><tr>
+			<td><input type="text"  id="mot"     placeholder="Rechercher..." /></td>
+			<td><input type="image" id="valider" src="http://adecec.net/images/icons/loupe.png"  ></td>
+		</tr></table><br /><br />
+		
+		<div id="resultat">
+		</div>
+	</body>
+</html>
