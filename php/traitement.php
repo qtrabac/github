@@ -1,4 +1,6 @@
 <?php
+	header('Content-Type: text/json; charset=utf8');
+
 	// Paramètre d'entrée
 	$mot    = $_GET['mot']; 
 	$langue = $_GET['langue']; // valeur attendue : mot_corse et mot_francais
@@ -91,6 +93,7 @@
 			for($w = 0; $w < $nb2; $w++){
 				$resultats[$i]['id'] = $resultats[$i]['id'].$str2[$w];
 			}
+			// Pkoi une balise b ?
 			$resultats[$i]['id'] = '<b>'.$resultats[$i]['id'].'</b>';
 			// *****
 			
